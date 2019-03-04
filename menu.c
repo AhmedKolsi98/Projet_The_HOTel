@@ -4,8 +4,9 @@
 int main(void)
 {
 	SDL_Surface *ecran = NULL, *menu =NULL, *texte =NULL, *Play_Button = NULL,*Play_Button2 = NULL,*Play_Button3 = NULL,*Settings_Button = NULL,*Settings_Button2 = NULL,*Settings_Button3 = NULL,*Exit_Button = NULL,*Exit_Button2 = NULL,*Exit_Button3 = NULL;  //Surface pour le menu
-	SDL_Rect positionMenu,positionClic,positionTxt,positionPlay,positionPlay2,positionPlay3,positionSettings,positionSettings2,positionSettings3,positionExit,positionExit2,positionExit3;
+	SDL_Rect positionEcran,positionMenu,positionClic,positionTxt,positionPlay,positionPlay2,positionPlay3,positionSettings,positionSettings2,positionSettings3,positionExit,positionExit2,positionExit3;
 	SDL_Event event;
+	int b_newgame,b_settings,b_exit;
 	int continuer = 1;
 
 	TTF_Font *police = NULL, *policeSettings = NULL;
@@ -45,31 +46,38 @@ int main(void)
 	Exit_Button2 = IMG_Load("Exit2.png");
 	Exit_Button3 = IMG_Load("Exit3.png");
 
-	positionTxt.x = 417;
-	positionTxt.y = 162;
+	positionEcran.x = 0;
+	positionEcran.x = 0;
 
-	positionPlay.x =328;
-	positionPlay.y =290;
+	positionEcran.h = menu->h;
+	positionEcran.w = menu->w;
+
+	
+	positionTxt.x = 417;//0,64 * positionEcran.h;
+	positionTxt.y = 162; //0,36 * positionEcran.w;
+
+	positionPlay.x =328;//0,36 * positionEcran.h;
+	positionPlay.y =290;//0,64 * positionEcran.w;
 	positionPlay2.x = positionPlay.x;
 	positionPlay2.y = positionPlay.y;
 	positionPlay3.x = positionPlay.x;
 	positionPlay3.y = positionPlay.y;
 
-	positionSettings.x =494;
-	positionSettings.y =290;
+	positionSettings.x =494;//0,55 * positionEcran.h;
+	positionSettings.y =290;//0,64 * positionEcran.w;
 	positionSettings2.x =positionSettings.x;
 	positionSettings2.y =positionSettings.y;
 	positionSettings3.x =positionSettings.x;
 	positionSettings3.y =positionSettings.y;
 
-	positionExit.x =661;
-	positionExit.y =290;
+	positionExit.x = 661; //0,73 * positionEcran.h
+	positionExit.y = 290;//0,64 * positionEcran.w
 	positionExit2.x = positionExit.x;
 	positionExit2.y = positionExit.y;
 	positionExit3.x = positionExit.x;
 	positionExit3.y = positionExit.y;
 
-	SDL_BlitSurface(menu,NULL,ecran,NULL);
+	SDL_BlitSurface(menu,NULL,ecran,&positionEcran);
 	SDL_BlitSurface(Play_Button,NULL,ecran,&positionPlay);
 	SDL_BlitSurface(Settings_Button,NULL,ecran,&positionSettings);
 	SDL_BlitSurface(Exit_Button,NULL,ecran,&positionExit);
@@ -84,13 +92,202 @@ int main(void)
 		case SDL_QUIT:
 			continuer = 0;
 			break;
-		case SDL_KEYDOWN:
+		case SDL_KEYDOWN: //Avec clavier
 			switch (event.key.keysym.sym)
 			{
 				case SDLK_ESCAPE:
 				//...
-				break;
-			}
+				break;}
+    		//avec clavier
+    	/*	case SDL_KEYDOWN:
+    			switch(event.key.keysym.sym){
+    			
+    				case SDLK_UP:
+    				if (ng==0 && op==0 && ex==0 && lg==0)
+    				{lg=1;}
+    					if (ng==1 && t==0){
+    						ex=1;
+    						ng=0;
+    						op=0;
+    						t=1;
+    					}
+    					else if(op==1 && t==0){
+    						if (lg==0)
+                            {
+                                ng=0;
+                                lg=1;
+                                op=0;
+                                ex=0;
+                                t=1;
+                            }
+                            else{
+                                ng=1;
+                                op=0;
+                                ex=0;
+                                t=1;
+                            }
+    					}
+    					else if (ex==1 && t==0){
+    						op=1;
+    						ex=0;
+    						ng=0;
+    						t=1;
+    					}
+                        else if (lg==1 && t==0)
+                        {
+                            ng=1;
+                            lg=0;
+                            op=0;
+                            ex=0;
+                            t=1;
+                        }
+    				break;
+
+    				case SDLK_DOWN:
+    				if (ng==0 && op==0 && ex==0 && lg==0)
+    				{ex=1;}
+    					if (ng==1 && t==0){
+    						if (lg==0)
+                            {
+                                ng=0;
+                                lg=1;
+                                op=0;
+                                ex=0;
+                                t=1;
+                            }
+                            else{
+                                ng=0;
+                                op=1;
+                                ex=0;
+                                t=1;
+                            }
+    					}
+    					else if(op==1 && t==0){
+    						ng=0;
+    						op=0;
+    						ex=1;
+    						t=1;
+    					}
+    					else if (ex==1 && t==0){
+    						op=0;
+    						ex=0;
+    						ng=1;
+    						t=1;
+    					}
+                        else if (lg==1 && t==0)
+                        {
+                            ng=0;
+                            lg=0;
+                            op=1;
+                            ex=0;
+                            t=1;
+                        }
+    				break;
+
+    				case SDLK_RETURN:
+    					if (ng==1)
+    					{
+    						SDL_BlitSurface(newgame[2],NULL,screen,&pos);
+    						SDL_Flip(screen);
+    						SDL_Delay(100);
+    						
+    						//return NEW_GAME;
+    					}
+    					else if (op==1)
+    					{
+    						SDL_BlitSurface(option[2],NULL,screen,&pos);
+    						SDL_Flip(screen);
+    						SDL_Delay(100);
+    					
+    						//return OPTION;
+    					}
+    					else if (ex==1)
+    					{
+    						SDL_BlitSurface(exit[2],NULL,screen,&pos);
+    						SDL_Flip(screen);
+    						SDL_Delay(100);
+    						if (quit(screen)==1)
+    						done = 0;
+    					}
+                        else if (lg==2)
+                        {
+                          SDL_BlitSurface(loadgame[2],NULL,screen,&pos);
+    						SDL_Flip(screen);
+    						SDL_Delay(100);
+                           // return LOAD_GAME;
+                        }
+    				break;
+    			}
+    		break;
+
+//avec souris
+    		case SDL_MOUSEMOTION:
+    			
+    				ex=0;
+    				ng=0;
+    				op=0;
+    				lg=0;
+    			if (event.motion.x>60 && event.motion.y>300 && event.motion.x<320 && event.motion.y<350 )
+    			{
+    			ng=1;
+    			
+    			}
+    			
+    			else if (event.motion.x>60 && event.motion.y>420 && event.motion.x<320 && event.motion.y<470 )
+    			{
+    				op=1;
+    			
+    			}
+    			else if (event.motion.x>60 && event.motion.y>365 && event.motion.x<320 && event.motion.y<410 )
+    			{
+    				lg=1;
+    			
+    			}
+    			else if (event.motion.x>60 && event.motion.y>490 && event.motion.x<320 && event.motion.y<560 )
+    			{
+    				ex=1;
+    				
+    			}
+    			
+    		break;
+
+    		case SDL_MOUSEBUTTONDOWN:
+    			if (event.button.button==SDL_BUTTON_LEFT)
+    			{
+    				if (ng==1)
+    				{    				
+    					ng=2;
+    					SDL_Delay (100);
+    					//return NEW_GAME;
+    				}
+    				else if (op==1)
+    				{
+    				op=2;   
+    				SDL_Delay (100);					
+    					//return OPTION;
+    				}
+    				else if (lg==1)
+    				{
+    				lg=2;   
+    				SDL_Delay (100);					
+    					//return SCORE;
+    				}
+    				else if (ex==1)
+    				{
+    			SDL_BlitSurface(exit[2],NULL,screen,&pos);
+    						SDL_Flip(screen);
+    				SDL_Delay (200);
+					if (quit(screen)==1)
+    			done= 0;
+    				}
+    			}
+    		break;
+    		
+    		
+    	}
+
+    	}
+ }  */
 		case SDL_MOUSEBUTTONUP:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
