@@ -1,24 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL/SDL.h> //librairies qui contient les fonctions
-#include <SDL/SDL_Image.h>
-int main(void)
-{
-	SDL_Surface *ecran = NULL;
-	SDL_Surface *imageFond = NULL;
-	SDL_Rect positionFond;
-	positionFond.x = 0;
-	positionFond.y = 0;
+#include <SDL/SDL.h>
+#include "SDL/SDL_image.h"
+#include "SDL/SDL_ttf.h"
+#include "SDL/SDL_mixer.h"
+#include "background.h"
 
-	imageFond = SDL_LoadBMP("background.bmp");
-	SDL_Init(SDL_INIT_VIDEO);
-	ecran = SDL_SetVideoMode(800,600,32,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	SDL_WM_SetCaption("THe HOTel",NULL); //Name of the game
-	//SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,30,15,22));
-	SDL_BlitSurface(imageFond,NULL,ecran,&positionFond);
-	SDL_Flip(ecran); //Mise à jour
-	SDL_FreeSurface(imageFond);
-	SDL_Delay(5000);
-	SDL_Quit();
-	return EXIT_SUCCESS;
+int width_bg=1134;
+
+
+ 
+int main ()
+{
+SDL_Surface *screen;
+screen=SDL_SetVideoMode(600,200,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+background b;
+vie v;
+initialisation_background (&b  );
+ intialiser_vie (&v);
+
+int done=1;
+
+SDL_Event event;
+    while(done)
+    {
+      
+      if (SDL_PollEvent(&event))
+       {
+
+
+switch (event.type) {
+  case SDL_QUIT  : done=0 ; break;
+case SDL_KEYDOWN :
+  if (event.key.keysym.sym == SDLK_RIGHT){
+if (b.camera.x<=width_bg-600-20) 
+    scrolling_right (& b , screen );
+
+
 }
+ else if (event.key.keysym.sym == SDLK_LEFT){
+    if (b.camera.x>=0)
+   scrolling_left (& b , screen );
+
+  }
+  
+break;
+
+}
+}
+gestion_vie (&v, k,screen) ;
+afficher_background (screen ,& b);
+afficher_vie (&v, k , screen );
+
+SDL_Flip(screen);
+}
+}
+
+
+
