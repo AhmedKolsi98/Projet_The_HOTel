@@ -375,7 +375,10 @@ int main(void)
 	return EXIT_SUCCESS;
 
 }
-
+int main()
+{
+    return 0;
+}
 
 
 
