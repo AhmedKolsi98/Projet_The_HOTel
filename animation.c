@@ -24,12 +24,13 @@ p[4]=IMG_Load("p11.png");
 p[5]=IMG_Load("p12.png");
 p[6]=IMG_Load("p13.png");
 p[7]=IMG_Load("p14.png");
-p[8]=IMG_Load("/home/fatima16/Desktop/projet/p7.png");
-p[9]=IMG_Load("/home/fatima16/Desktop/projet/p8.png");
-p[10]=IMG_Load("/home/fatima16/Desktop/projet/p9.png");
-p[11]=IMG_Load("/home/fatima16/Desktop/projet/p10.png");
-p[12]=IMG_Load("/home/fatima16/Desktop/projet/p1.1.png");
-
+p[8]=IMG_Load("p7.png");
+p[9]=IMG_Load("p8.png");
+p[10]=IMG_Load("p9.png");
+p[11]=IMG_Load("p10.png");
+p[12]=IMG_Load("p1.1.png");
+int velocity=0,gravity=12;
+int ground=450;
 
 
 
@@ -90,6 +91,7 @@ switch(event.type)
      SDL_BlitSurface(p[frame],NULL,screen,&p_p);
      SDL_Flip(screen);
      SDL_Delay(50);
+    p_p.x-=10;
      frame+=speed;
      break;
      case SDLK_RIGHT :
@@ -101,9 +103,11 @@ switch(event.type)
      SDL_BlitSurface(p[frame],NULL,screen,&p_p);
      SDL_Flip(screen);
      SDL_Delay(50);
-     frame+=speed;
+p_p.x+=10; 
+    frame++;
      break;
     case SDLK_UP :
+ 
  if(frame<=8||frame>=13)
 {
 frame=8;
@@ -112,15 +116,40 @@ SDL_BlitSurface(background,NULL,screen,&p_background);
      SDL_BlitSurface(p[frame],NULL,screen,&p_p);
      SDL_Flip(screen);
      SDL_Delay(50);
-     frame+=speed;
+     frame++;
+    if( p_p.y==ground)//collision with ground
+        {velocity =-100;
+}
+   
+
      break;
+  
 
 
 
    }
+
    break;
+ case SDL_KEYUP : 
+switch(event.key.keysym.sym)
+   {
+       case SDLK_UP :
+
+          velocity = 0;
+        break;
+
+   }
+
+break;
 }
 
+}
+velocity+=gravity;
+	p_p.y += velocity;
+if(p_p.y >= ground)
+  {
+   p_p.y= ground;
+    velocity = 0;
 }
 SDL_FreeSurface(p[13]);
 SDL_FreeSurface(background);
